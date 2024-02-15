@@ -1,0 +1,37 @@
+<template>
+  <input class="form-control longer" value.bind="filter" placeholder="Search..." focus.trigger="inputFocused()">
+  <ul if.bind="showList" class="dropdown-list no-list">
+    <li repeat.for="item of filteredItems" click.trigger="selectItem(item)">
+      <span style="font-weight: bold;">${item.text}</span>
+      <ul if.bind="item.children && item.children.length" class="no-list test-item">
+        <li repeat.for="child of item.children" style="margin-left: 20px;" click.trigger="selectItem(child)">${child.text}</li>
+      </ul>
+    </li>
+  </ul>
+  <style>
+    .dropdown-list {
+      max-height: 400px;
+      overflow-y: auto; 
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      background-color: white; 
+      position: absolute; 
+      width: 100%;
+      max-width: 500px; 
+      z-index: 1000;
+    }
+
+    .no-list {
+      list-style: none;
+    }
+
+    .test-item {
+      padding: 0;
+      margin: 0;
+    }
+
+    .longer {
+      width: 200px;
+    }
+  </style>
+</template>
