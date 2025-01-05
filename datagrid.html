@@ -1,0 +1,41 @@
+<template>
+  <!-- Just realised that <slot> does not work in if.bind or repeat.for :( -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-condensed">
+      <thead>
+        <tr>
+          <th repeat.for="column of columns" click.delegate="sort(column.field)">
+            ${column.label}
+            <span if.bind="sortColumn === column.field && sortDirection === 'asc'">▲</span>
+            <span if.bind="sortColumn === column.field && sortDirection === 'desc'">▼</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr repeat.for="item of paginatedData">
+          <td repeat.for="column of columns">
+            <template if.bind="column.slot">
+              <slot name.bind="column.slot"></slot>
+            </template>
+            <template else>
+              ${item[column.field]}
+            </template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button click.delegate="changePage(1)" disabled.bind="currentPage === 1">First</button>
+      <button click.delegate="changePage(currentPage - 1)" disabled.bind="currentPage === 1">Previous</button>
+    
+      <span repeat.for="page of pages">
+        <button click.delegate="changePage(page)" class.bind="page === currentPage ? 'active' : ''">${page}</button>
+      </span>
+    
+      <button click.delegate="changePage(currentPage + 1)" disabled.bind="currentPage === totalPages">Next</button>
+      <button click.delegate="changePage(totalPages)" disabled.bind="currentPage === totalPages">Last</button>
+    </div>
+     
+  </div>
+</template>
